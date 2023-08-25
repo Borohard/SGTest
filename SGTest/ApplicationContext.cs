@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using SGTest.Models;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,11 @@ namespace SGTest
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=SGTest;Username=postgres;Password=admin123");
+            var builder = new ConfigurationBuilder();
+            builder.SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+            IConfiguration config = builder.Build();
+            optionsBuilder.UseNpgsql(config.GetConnectionString("AppContextConnection"));
         }
     }
 }
