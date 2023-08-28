@@ -1,11 +1,4 @@
-﻿using SGTest.Models;
-using SGTest.Repositories;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Reflection.PortableExecutable;
-using Microsoft.Extensions.Configuration;
-using Microsoft.EntityFrameworkCore;
-using System.IO;
-using SGTest.FileLoaders;
+﻿using SGTest.FileLoaders;
 using SGTest.OutputService;
 
 internal class Program
@@ -13,13 +6,13 @@ internal class Program
     private static void Main(string[] args)
     {
         Console.WriteLine("Здравствуйте! Вы можете импортировать TSV файл или вывести текущую структуру данных");
-        Console.WriteLine("\t -input --Импорт данных");
+        Console.WriteLine("\t -imp --Импорт данных");
         Console.WriteLine("\t -info --вывести текущую структуру данных ");
 
         string? userMode = Console.ReadLine();
         switch (userMode)
         {
-            case "-input":
+            case "-imp":
                 InputUserData();
                 break;
             case "-info":
@@ -51,24 +44,24 @@ internal class Program
         Console.WriteLine("\t -jtt --Название должности");
 
         var userInputMode = Console.ReadLine();
+        var fullPathToFile = folder + "\\data\\" + userFileName + ".tsv";
         switch (userInputMode)
         {
             case "-dpt":
-                Console.WriteLine("department");
+                Console.WriteLine("Выбран режим импорта подразделения");
                 DepartmentsFileLoader departmentsFileLoader = new DepartmentsFileLoader();
-                departmentsFileLoader.LoadData(folder + "\\data\\" + userFileName + ".tsv");
+                departmentsFileLoader.LoadData(fullPathToFile);
                 break;
             case "-emp":
-                Console.WriteLine("employee");
+                Console.WriteLine("Выбран режим импорта Сотрудника");
                 EmployeeFileLoader employeeFileLoader = new EmployeeFileLoader();
-                employeeFileLoader.LoadData(folder + "\\data\\" + userFileName + ".tsv");
+                employeeFileLoader.LoadData(fullPathToFile);
                 break;
             case "-jtt":
+                Console.WriteLine("Выбран режим импорта должности");
                 JobTitlesFileLoader jobTitlesFileLoader = new JobTitlesFileLoader();
-                jobTitlesFileLoader.LoadData(folder + "\\data\\" + userFileName + ".tsv");
+                jobTitlesFileLoader.LoadData(fullPathToFile);
                 break;
         }
     }
-
-
 }

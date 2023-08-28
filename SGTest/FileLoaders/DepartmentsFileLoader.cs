@@ -1,12 +1,5 @@
 ﻿using SGTest.DTO.Services;
-using SGTest.Models;
 using SGTest.Parsers;
-using SGTest.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SGTest.FileLoaders
 {
@@ -30,13 +23,15 @@ namespace SGTest.FileLoaders
                 {
                     try
                     {
+                        Console.WriteLine(entityLine);
                         var departmentDto = parser.ConvertToDto(entityLine);
                         departmentService.SaveDepartment(departmentDto);
-                        Console.WriteLine(entityLine);
+                        
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine(ex.Message);
+                        Console.WriteLine("\tБитая запись, проверьте правильность данных");
+                        Console.WriteLine("\t" + ex.Message);
                     }
                 }
             }
