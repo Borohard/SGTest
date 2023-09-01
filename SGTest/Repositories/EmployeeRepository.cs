@@ -4,7 +4,7 @@ namespace SGTest.Repositories
 {
     public class EmployeeRepository : IDisposable
     {
-        private ApplicationContext _context;
+        private readonly ApplicationContext _context;
         public EmployeeRepository()
         {
             _context = new ApplicationContext();
@@ -22,10 +22,10 @@ namespace SGTest.Repositories
             return employee != null ? employee.Id : 0;
         }
 
-        public bool IsEmployeeExist(string? employeeName)
+        public Employee? IsEmployeeExist(string? employeeName)
         {
             var employee = _context.Employees.Where(x => x.FullName == employeeName).FirstOrDefault();
-            return employee != null ? true : false;
+            return employee != null ? employee : null;
         }
 
         public List<Employee> GetAllDepartments()
@@ -50,7 +50,7 @@ namespace SGTest.Repositories
         }
         public void Dispose()
         {
-            _context = new ApplicationContext();
+            _context.Dispose();
         }
     }
 }

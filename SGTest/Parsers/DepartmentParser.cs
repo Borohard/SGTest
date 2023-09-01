@@ -27,7 +27,6 @@ namespace SGTest.Parsers
         private string CleanPhoneField(string phone)
         {
             phone = phone.Trim();
-            //phone = Regex.Replace(phone, "+7", "8");
             phone = Regex.Replace(phone, @"[^\w\s]", "");
             phone = Regex.Replace(phone, " ", "");
             phone = phone.ToLower();

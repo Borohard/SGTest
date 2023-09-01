@@ -5,7 +5,7 @@ namespace SGTest.Repositories
     internal class DepartmentOutFormRepository : IDisposable
     {
 
-        ApplicationContext _context;
+        private readonly ApplicationContext _context;
         public DepartmentOutFormRepository()
         {
             _context = new ApplicationContext();
@@ -18,34 +18,34 @@ namespace SGTest.Repositories
 
             DepartmentOutForm departmentHirerchyNode = new DepartmentOutForm();
 
-            departmentHirerchyNode.department = _context.Departments.Find(departmentID);
+            departmentHirerchyNode.Department = _context.Departments.Find(departmentID);
 
-            if (departmentHirerchyNode.department == null)
+            if (departmentHirerchyNode.Department == null)
                 return null;
             
             if (isMainDepartment)
             {
-                departmentHirerchyNode.employeesToJobTitle = new Dictionary<string, string>();
+                departmentHirerchyNode.EmployeesToJobTitle = new Dictionary<string, string>();
 
                 var employees = _context.Employees.Where(x => x.DepartmentID == departmentID).ToList();
                 foreach ( var employee in employees )
                 {
-                    departmentHirerchyNode.employeesToJobTitle.Add(employee.FullName, _context.JobTitles.Where(x => x.Id == employee.JobTitleID).SingleOrDefault().Title);
+                    departmentHirerchyNode.EmployeesToJobTitle.Add(employee.FullName, _context.JobTitles.Where(x => x.Id == employee.JobTitleID).SingleOrDefault().Title);
                 }
 
-                var manager = _context.Employees.Find(departmentHirerchyNode.department?.ManagerID);
+                var manager = _context.Employees.Find(departmentHirerchyNode.Department?.ManagerID);
 
                 try
                 {
-                    departmentHirerchyNode.managerToJobTitle = new Dictionary<string, string>();
+                    departmentHirerchyNode.ManagerToJobTitle = new Dictionary<string, string>();
 
                     if (manager.JobTitleID == 0)
                     {
-                        departmentHirerchyNode.managerToJobTitle.Add(manager.FullName, "В базе данных не содержится сведений о профессии менеджера, Вам нужно добавить их");
+                        departmentHirerchyNode.ManagerToJobTitle.Add(manager.FullName, "В базе данных не содержится сведений о профессии менеджера, Вам нужно добавить их");
                     }
                     else
                     {
-                        departmentHirerchyNode.managerToJobTitle.Add(manager.FullName, _context.JobTitles.Find(manager.JobTitleID).Title);
+                        departmentHirerchyNode.ManagerToJobTitle.Add(manager.FullName, _context.JobTitles.Find(manager.JobTitleID).Title);
                     }                
                 }
                 catch (Exception ex)
@@ -54,15 +54,15 @@ namespace SGTest.Repositories
                 }
             }   
             
-            departmentHirerchyNode.parentDepartmentData = GetDepartmentsHierarchy(departmentHirerchyNode.department.ParentID, false);
+            departmentHirerchyNode.ParentDepartmentData = GetDepartmentsHierarchy(departmentHirerchyNode.Department.ParentID, false);
 
-            if (departmentHirerchyNode.parentDepartmentData == null )
+            if (departmentHirerchyNode.ParentDepartmentData == null )
             {
-                departmentHirerchyNode.hierarchyLevel = 1;
+                departmentHirerchyNode.HierarchyLevel = 1;
             }
             else
             {
-                departmentHirerchyNode.hierarchyLevel = departmentHirerchyNode.parentDepartmentData.hierarchyLevel + 1;
+                departmentHirerchyNode.HierarchyLevel = departmentHirerchyNode.ParentDepartmentData.HierarchyLevel + 1;
             }
             return departmentHirerchyNode;
         }

@@ -4,7 +4,7 @@ namespace SGTest.Repositories
 {
     public class JobTitleRepository : IDisposable
     {
-        private ApplicationContext _context;
+        private readonly ApplicationContext _context;
         public JobTitleRepository()
         {
             _context = new ApplicationContext();
@@ -22,10 +22,10 @@ namespace SGTest.Repositories
             return jobTitle != null ? jobTitle.Id : 0;
         }
 
-        public bool IsJobTitleExist(string? title)
+        public JobTitle? IsJobTitleExist(string? title)
         {
-            var employee = _context.JobTitles.Where(x => x.Title == title).FirstOrDefault();
-            return employee != null ? true : false;
+            var jobTitle = _context.JobTitles.Where(x => x.Title == title).FirstOrDefault();
+            return jobTitle != null ? jobTitle : null;
         }
 
         public List<JobTitle> GetAllJobTitles()

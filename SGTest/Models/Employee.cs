@@ -1,5 +1,8 @@
-﻿namespace SGTest.Models
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace SGTest.Models
 {
+    [Index(nameof(FullName), IsUnique = true)]
     public class Employee
     {
         public int Id { get; set; }

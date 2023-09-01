@@ -4,7 +4,7 @@ namespace SGTest.Repositories
 {
     public class DepartmentRepository : IDisposable
     {
-        private ApplicationContext _context;
+        private readonly ApplicationContext _context;
         public DepartmentRepository()
         {
             _context = new ApplicationContext();
@@ -21,10 +21,10 @@ namespace SGTest.Repositories
             var department = _context.Departments.Where(x => x.Name == departmentName).FirstOrDefault();
             return department != null ? department.Id : 0;
         }
-        public bool IsDepartmentExist(string? departmentName)
+        public Department? IsDepartmentExist(string? departmentName)
         {
             var department = _context.Departments.Where(x => x.Name == departmentName).FirstOrDefault();
-            return department != null ? true : false;
+            return department != null ? department : null;
         }
 
         public List<Department> GetAllDepartment()

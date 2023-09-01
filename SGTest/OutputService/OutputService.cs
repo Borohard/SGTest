@@ -20,20 +20,20 @@ namespace SGTest.OutputService
             if (departmentOutForm == null)
                 return;
            
-            Console.WriteLine($"{"=".Repeat(departmentOutForm.hierarchyLevel)} {departmentOutForm.department?.Name}");
+            Console.WriteLine($"{"=".Repeat(departmentOutForm.HierarchyLevel)} {departmentOutForm.Department?.Name}");
 
             if (isMainDepartment)
             {
-                var manager = departmentOutForm.managerToJobTitle.FirstOrDefault();               
-                Console.WriteLine($"{" ".Repeat(departmentOutForm.hierarchyLevel - 1)}* {manager.Key} ({manager.Value})");
+                var manager = departmentOutForm.ManagerToJobTitle.FirstOrDefault();               
+                Console.WriteLine($"{" ".Repeat(departmentOutForm.HierarchyLevel - 1)}* {manager.Key} ({manager.Value})");
              
-                foreach(var employee in  departmentOutForm.employeesToJobTitle)
+                foreach(var employee in  departmentOutForm.EmployeesToJobTitle)
                 {
-                    Console.WriteLine($"{" ".Repeat(departmentOutForm.hierarchyLevel - 1)}- {employee.Key} ({employee.Value})");
+                    Console.WriteLine($"{" ".Repeat(departmentOutForm.HierarchyLevel - 1)}- {employee.Key} ({employee.Value})");
                 }    
             }
             
-            ShowFormData(departmentOutForm.parentDepartmentData, false);
+            ShowFormData(departmentOutForm.ParentDepartmentData, false);
         }
     }
 }
